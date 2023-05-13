@@ -7,7 +7,7 @@
  *  Name: Yongda Long
  *  Student ID: 172800211
  *  Date: May 19, 2023
- *  Heroku Link:
+ *  Heroku Link: https://yongdalong.cyclic.app
  *
  ********************************************************************************/
 
@@ -26,20 +26,8 @@ app.use(express.json());
 
 const HTTP_PORT = process.env.PORT || 8080;
 
-// Initialize
-db.initialize(process.env.MONGODB_CONN_STRING)
-  .then(() => {
-    app.listen(HTTP_PORT, () => {
-      console.log(`server listening on: ${HTTP_PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// API Routes
 
-// Routes
-
-// Home
 app.get("/", (req, res) => {
   res.json({ message: "API Listening" });
 });
@@ -48,7 +36,6 @@ app.get("/home", (req, res) => {
   res.json({ message: "API Listening" });
 });
 
-// APIs
 app.post("/api/trips", (req, res) => {
   db.addNewTrip(req.body)
     .then((data) => {
@@ -109,6 +96,17 @@ app.delete("/api/trips/:id", (req, res) => {
       res.status(500).json({ error: err });
     });
 });
+
+// Initialize
+db.initialize(process.env.MONGODB_CONN_STRING)
+  .then(() => {
+    app.listen(HTTP_PORT, () => {
+      console.log(`server listening on: ${HTTP_PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // 404
 app.use((req, res) => {
